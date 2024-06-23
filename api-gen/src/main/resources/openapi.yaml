@@ -1,0 +1,188 @@
+openapi: 3.0.3
+info:
+  title: Bookshop API
+  description: APIs for managing books in a bookshop
+  version: "1.0"
+servers:
+  - url: http://localhost:8080
+    description: Local server
+paths:
+  /bookshop/getBookById/{id}:
+    get:
+      summary: Retrieve a book by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookResponse'
+  /bookshop/getAllBooks:
+    get:
+      summary: Retrieve all books
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BookResponse'
+  /bookshop/getBooksByGenre/{genre}:
+    get:
+      summary: Retrieve books by genre
+      parameters:
+        - name: genre
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BookResponse'
+  /bookshop/createBook:
+    post:
+      summary: Create a new book
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookCreateRequest'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookResponse'
+  /bookshop/updateBook:
+    post:
+      summary: Update an existing book
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookUpdateRequest'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookResponse'
+  /bookshop/deleteBook/{id}:
+    delete:
+      summary: Delete a book by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Successful operation
+  /bookshop/orderBook:
+    post:
+      summary: Order a book
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderRequest'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderRequest'
+components:
+  schemas:
+    BookResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        title:
+          type: string
+        genre:
+          type: string
+        price:
+          type: number
+        pages:
+          type: integer
+        views:
+          type: integer
+        stock:
+          type: integer
+        author:
+          $ref: '#/components/schemas/Author'
+    BookCreateRequest:
+      type: object
+      properties:
+        title:
+          type: string
+        genre:
+          type: string
+        price:
+          type: number
+        pages:
+          type: integer
+        stock:
+          type: integer
+        author:
+          $ref: '#/components/schemas/Author'
+    BookUpdateRequest:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        title:
+          type: string
+        genre:
+          type: string
+        price:
+          type: number
+        pages:
+          type: integer
+        stock:
+          type: integer
+        author:
+          $ref: '#/components/schemas/Author'
+    OrderRequest:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        quantity:
+          type: integer
+    Author:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
